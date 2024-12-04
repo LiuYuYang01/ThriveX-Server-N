@@ -1,5 +1,5 @@
 import { Controller, Get, Post } from '@nestjs/common';
-import { CateService } from '../service/CateService';
+import { CateService } from "@/service/CateService";
 
 @Controller('/cate')
 export class CateController {

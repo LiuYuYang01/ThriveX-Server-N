@@ -9,6 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api', {
     exclude: [{ path: '/', method: RequestMethod.GET }],
   });
+  
   await app.listen(process.env.PORT ?? 3000);
 }
 
