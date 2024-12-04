@@ -3,7 +3,7 @@ import { CateService } from '../service/CateService';
 
 @Controller('/cate')
 export class CateController {
-  constructor(private cateServce: CateService) {
+  constructor(private cateService: CateService) {
   }
 
   @Get()
@@ -13,6 +13,6 @@ export class CateController {
 
   @Post('list')
   list() {
-    return this.cateServce.list();
+    return this.cateService.list();
   }
 }

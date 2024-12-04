@@ -4,5 +4,185 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:liuyuyang@localhost:3306/ThriveX"
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model article {
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar(255)
+  description String? @db.VarChar(200)
+  content     String  @db.Text
+  cover       String? @db.VarChar(300)
+  view        Int?    @default(0)
+  comment     Int?    @default(0)
+  tag_ids     String? @db.VarChar(100)
+  is_draft    Int     @default(0) @db.TinyInt
+  is_del      Int     @default(0) @db.TinyInt
+  create_time String  @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model article_cate {
+  id         Int @id @unique(map: "article_cate_pk_2") @default(autoincrement())
+  article_id Int
+  cate_id    Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model article_config {
+  id         Int                    @id @unique(map: "article_config_pk_2") @default(autoincrement())
+  status     article_config_status? @default(default)
+  password   String?                @default("") @db.VarChar(100)
+  article_id Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model cate {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique(map: "name") @db.VarChar(255)
+  icon  String? @db.VarChar(100)
+  url   String? @default("/") @db.VarChar(255)
+  mark  String  @unique(map: "cate_pk") @db.VarChar(100)
+  level Int?
+  order Int     @default(0)
+  type  String? @default("cate") @db.VarChar(10)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model comment {
+  id           Int     @id @default(autoincrement())
+  name         String  @db.VarChar(50)
+  avatar       String? @db.VarChar(255)
+  content      String  @db.Text
+  email        String? @db.VarChar(100)
+  url          String? @db.VarChar(500)
+  article_id   Int
+  comment_id   Int?    @default(0)
+  audit_status Int?    @default(0)
+  create_time  String  @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model config {
+  name  String  @unique(map: "config_pk") @db.VarChar(100)
+  value String  @db.Text
+  group String  @db.VarChar(255)
+  note  String? @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model footprint {
+  id          Int     @id @unique(map: "footprint_pk_2") @default(autoincrement())
+  title       String  @db.VarChar(255)
+  content     String? @db.VarChar(1500)
+  address     String  @db.VarChar(255)
+  position    String  @db.VarChar(255)
+  images      Json?
+  create_time String  @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model link {
+  id           Int     @id @default(autoincrement())
+  title        String  @db.VarChar(100)
+  description  String  @db.VarChar(255)
+  email        String? @db.VarChar(100)
+  image        String  @db.VarChar(255)
+  url          String? @db.VarChar(500)
+  rss          String? @db.VarChar(500)
+  order        Int     @default(0)
+  type_id      Int
+  audit_status Int     @default(0)
+  create_time  String  @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model link_type {
+  id       Int    @id @unique(map: "type_pk_2") @default(autoincrement())
+  name     String @db.VarChar(100)
+  is_admin Int    @default(0)
+  order    Int    @default(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model record {
+  id          Int    @id @unique(map: "record_pk_2") @default(autoincrement())
+  content     String @db.Text
+  images      Json?
+  create_time String @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model role {
+  id          Int    @id @unique(map: "role_pk_3") @default(autoincrement())
+  name        String @unique(map: "role_pk") @db.VarChar(255)
+  mark        String @unique(map: "role_pk_2") @db.VarChar(100)
+  description String @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model route {
+  id          Int    @id @unique(map: "routes_pk") @default(autoincrement())
+  path        String @db.VarChar(100)
+  description String @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model route_role {
+  id       Int @id @unique(map: "routes_role_pk_2") @default(autoincrement())
+  route_id Int
+  role_id  Int
+}
+
+model swiper {
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar(100)
+  description String? @db.VarChar(255)
+  image       String  @db.VarChar(255)
+  url         String? @db.VarChar(500)
+}
+
+model tag {
+  id   Int    @id @default(autoincrement())
+  name String @unique(map: "tag_pk") @db.VarChar(100)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user {
+  id          Int     @id @default(autoincrement())
+  username    String  @unique(map: "user_pk") @db.VarChar(50)
+  password    String  @db.VarChar(50)
+  name        String  @db.VarChar(50)
+  email       String? @db.VarChar(100)
+  avatar      String? @db.VarChar(255)
+  info        String? @db.VarChar(255)
+  role_id     String  @db.VarChar(50)
+  create_time String  @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model wall {
+  id           Int     @id @unique(map: "wall_pk_2") @default(autoincrement())
+  name         String? @default("神秘人") @db.VarChar(100)
+  content      String  @db.VarChar(255)
+  color        String? @default("#ffe3944d") @db.VarChar(100)
+  email        String? @db.VarChar(100)
+  cate_id      Int
+  audit_status Int?    @default(0)
+  create_time  String  @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model wall_cate {
+  id    Int    @id @unique(map: "wall_cate_pk_2") @default(autoincrement())
+  name  String @db.VarChar(100)
+  mark  String @db.VarChar(100)
+  order Int
+}
+
+enum article_config_status {
+  default
+  no_home
+  hide
 }
