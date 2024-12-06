@@ -2,20 +2,17 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function toPagingData<T>(
+export default async function getPagingData<T>(
   model: keyof PrismaClient,
   paging: Paging,
-  order: string = "id",
-  orderDirection: "asc" | "desc" = "asc"
+  filter: any = {}
 ): Promise<PagingData<T>> {
   const { page, size } = paging;
   const total = await (prisma[model] as any).count();
   const results = await (prisma[model] as any).findMany({
     skip: (page - 1) * size,
     take: size,
-    orderBy: {
-      [order]: orderDirection
-    }
+    where: filter
   });
 
   const pages = Math.ceil(total / size);

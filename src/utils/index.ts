@@ -1,4 +1,4 @@
 import { Result } from "./result";
-import toPagingData from "./paging";
+import getPagingData from "./paging";
 
-export { Result, toPagingData };
+export { Result, getPagingData };
