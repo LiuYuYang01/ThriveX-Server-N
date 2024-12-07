@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CateService } from "@/service/CateService";
-import { Result, getPagingData } from "@/utils";
+import { Result } from "@/utils";
 import { Cate } from "@/data/cate";
 
 @Controller("/cate")
@@ -10,7 +10,25 @@ export class CateController {
 
   @Post()
   async add(@Body() cate: Cate) {
-    await this.cateService.add(cate)
+    await this.cateService.add(cate);
+    return Result.success();
+  }
+
+  @Delete("batch")
+  async delBatch(@Body() ids: number[]) {
+    await this.cateService.delBatch(ids);
+    return Result.success();
+  }
+
+  @Delete(":id")
+  async del(@Param("id") id: number) {
+    await this.cateService.del(id);
+    return Result.success();
+  }
+
+  @Patch()
+  async edit(@Body() cate: Cate) {
+    await this.cateService.edit(cate);
     return Result.success();
   }
 
@@ -28,7 +46,7 @@ export class CateController {
 
   @Post("paging")
   async paging(@Query("page") page: number, @Query("size") size: number) {
-    const list = await getPagingData("cate", { page, size });
+    const list = await this.cateService.paging(page, size);
     return Result.success(list);
   }
 }

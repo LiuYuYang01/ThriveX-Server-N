@@ -3,28 +3,35 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
+} from "@nestjs/common";
+import { HttpAdapterHost } from "@nestjs/core";
 
 @Catch()
 export class GlobalExceptionsFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) {
+  }
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
 
     const ctx = host.switchToHttp();
 
-    const httpStatus =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+    let code: number;
+    let message: string;
 
-    const responseBody = {
-      code: httpStatus,
+    if (exception instanceof HttpException) {
+      code = exception.getStatus();
+      message = exception.message;
+    }
+
+    // 在控制台打印错误信息
+    console.error("Global Exception:", message);
+
+    const response = {
+      code: code || 500,
+      message: message || "服务器内部错误"
     };
 
-    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
+    httpAdapter.reply(ctx.getResponse(), response, 200);
   }
 }

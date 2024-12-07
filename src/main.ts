@@ -28,7 +28,7 @@ async function bootstrap() {
   );
 
   // 全局异常处理
-  // app.useGlobalFilters(new GlobalExceptionsFilter(httpAdapterHost));
+  app.useGlobalFilters(new GlobalExceptionsFilter(httpAdapterHost));
   app.useGlobalFilters(new PrismaException());
 
   await app.listen(process.env.PORT ?? 3000);

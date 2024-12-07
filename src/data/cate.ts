@@ -7,4 +7,5 @@ export class Cate {
   level: number;
   order: number;
   type: string;
+  children?: Cate[];
 }
