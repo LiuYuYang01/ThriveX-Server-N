@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestj
 import { CateService } from "@/service/CateService";
 import { Result } from "@/utils";
 import { Cate } from "@/data/cate";
+import { CustomException } from "@/exception/CustomException";
 
 @Controller("/cate")
 export class CateController {

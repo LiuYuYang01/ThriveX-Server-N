@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { RequestMethod, ValidationPipe } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
-import { GlobalExceptionsFilter } from "./exception/GlobalExceptionsFilter";
+import { GlobalException } from "./exception/GlobalException";
 import { PrismaException } from "./exception/PrismaException";
 
 async function bootstrap() {
@@ -28,7 +28,7 @@ async function bootstrap() {
   );
 
   // 全局异常处理
-  app.useGlobalFilters(new GlobalExceptionsFilter(httpAdapterHost));
+  app.useGlobalFilters(new GlobalException(httpAdapterHost));
   app.useGlobalFilters(new PrismaException());
 
   await app.listen(process.env.PORT ?? 3000);
