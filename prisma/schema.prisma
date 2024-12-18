@@ -165,7 +165,7 @@ model user {
 model wall {
   id           Int     @id @unique(map: "wall_pk_2") @default(autoincrement())
   name         String? @default("神秘人") @db.VarChar(100)
-  content      String  @db.VarChar(255)
+  content      String  @db.VarChar(1000)
   color        String? @default("#ffe3944d") @db.VarChar(100)
   email        String? @db.VarChar(100)
   cate_id      Int
@@ -179,6 +179,50 @@ model wall_cate {
   name  String @db.VarChar(100)
   mark  String @db.VarChar(100)
   order Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model file_detail {
+  id                String    @id @db.VarChar(32)
+  url               String    @db.VarChar(512)
+  size              BigInt?
+  filename          String?   @db.VarChar(256)
+  original_filename String?   @db.VarChar(256)
+  base_path         String?   @db.VarChar(256)
+  path              String?   @db.VarChar(256)
+  ext               String?   @db.VarChar(32)
+  content_type      String?   @db.VarChar(128)
+  platform          String?   @db.VarChar(32)
+  th_url            String?   @db.VarChar(512)
+  th_filename       String?   @db.VarChar(256)
+  th_size           BigInt?
+  th_content_type   String?   @db.VarChar(128)
+  object_id         String?   @db.VarChar(32)
+  object_type       String?   @db.VarChar(32)
+  metadata          String?   @db.Text
+  user_metadata     String?   @db.Text
+  th_metadata       String?   @db.Text
+  th_user_metadata  String?   @db.Text
+  attr              String?   @db.Text
+  file_acl          String?   @db.VarChar(32)
+  th_file_acl       String?   @db.VarChar(32)
+  hash_info         String?   @db.Text
+  upload_id         String?   @db.VarChar(128)
+  upload_status     Int?
+  create_time       DateTime? @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model oss {
+  id          Int     @id @default(autoincrement())
+  platform    String  @db.VarChar(255)
+  access_key  String? @db.VarChar(100)
+  secret_key  String? @default("/") @db.VarChar(255)
+  end_point   String? @db.VarChar(100)
+  bucket_name String? @db.VarChar(255)
+  domain      String? @db.VarChar(255)
+  base_path   String? @db.VarChar(255)
+  is_enable   Int?
 }
 
 enum article_config_status {
